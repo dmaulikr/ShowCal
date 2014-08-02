@@ -35,7 +35,12 @@ int counter = 0;
     _searchShow.showsCancelButton = YES;
     _searchShow.autocorrectionType = UITextAutocorrectionTypeNo;
     _searchShow.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _showSearchResults = [[NSMutableArray alloc] init];
+    shows = [[searchDetails alloc] init];
 
+    //[_showSearchResults addObject:shows];
+
+    
 
     // Do any additional setup after loading the view.
 }
@@ -48,12 +53,15 @@ int counter = 0;
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self handleSearch:searchBar];
+
 }
 
 - (void)handleSearch:(UISearchBar *)searchBar {
+    
+    _showSearchResults = [[NSMutableArray alloc] init];
+    shows = [[searchDetails alloc] init];
     NSLog(@"User searched for %@", searchBar.text);
     NSString *search = [searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-
     [searchBar resignFirstResponder]; // if you want the keyboard to go away
     NSString *apiString;
     apiString = [NSString stringWithFormat:@"http://services.tvrage.com/feeds/search.php?show=%@", search];
@@ -64,6 +72,16 @@ int counter = 0;
     [parser setDelegate:self];
     NSLog(@"%hhd",[parser parse]);
     
+    [_table reloadData];
+   // _table = [[UITableView alloc] init];
+    _table.delegate = self;
+    _table.dataSource = self;
+    // _table.rowHeight = self.view.frame.size.height * 0.1;
+    _table.backgroundView = nil;
+    _table.backgroundColor = [UIColor clearColor];
+    _table.rowHeight = 80;
+    _table.separatorColor = [UIColor clearColor];
+
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
@@ -74,14 +92,17 @@ int counter = 0;
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
     NSString *tagName = elementName;
-    if ([tagName isEqualToString:@"show"])
+    if ([tagName isEqualToString:@"classification"])
     {
-        counter++;
+        NSLog(@"Show Name is: %@", shows.showID);
         if(shows.showName)
         {
+            //Add to Array and table for search results
             NSLog(@"Show Name is: %@", shows.showID);
+            [_showSearchResults addObject:shows];
         }
         shows = [[searchDetails alloc] init];
+
     }
     if([tagName isEqualToString:@"showid"])
     {
@@ -111,6 +132,7 @@ int counter = 0;
     if ([elementName isEqualToString:@"Results"])
     {
         NSLog(@"found Results");
+       // _showSearchResults = [[NSMutableArray alloc] init];
         return;
     }
 }
@@ -123,6 +145,7 @@ int counter = 0;
     if ([elementName isEqualToString:@"Results"])
     {
         NSLog(@"Results end");
+       
     }
     
 }
@@ -173,8 +196,55 @@ int counter = 0;
         shows.status = string;
         //NSLog(@"Show Status: %@", shows.status);
         _boolStatus = false;
-        counter = -1;
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSLog(@"count is: %lu", (unsigned long)[_showSearchResults count]);
+    return [_showSearchResults count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    static NSString *simpleTableIdentifier = @"SimpleTableItem";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+    searchDetails *temp = [_showSearchResults objectAtIndex:[indexPath row]];
+    cell.textLabel.text = temp.showName;
+    NSLog((@"name is: %@", temp.showName));
+    return cell;
+    /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    cell.textLabel.text = [_showSearchResults objectAtIndex:[indexPath row]];
+    UILabel *textLabel = [[UILabel alloc] init];
+    textLabel.text = cell.textLabel.text;
+   // [cell.textLabel setHidden:YES];
+    
+    textLabel.textColor = [UIColor whiteColor];
+    textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24.0];
+    [textLabel sizeToFit];
+    [cell.contentView addSubview:textLabel];
+    [textLabel setCenter:CGPointMake(self.view.center.x, 40)];
+    UIView *selectedView =  [[UIView alloc] init];
+    selectedView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0.2 alpha:0.4];
+    [cell setSelectedBackgroundView:selectedView];
+    return cell;*/
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+    AddShows *addScreen = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"add"];
+    addScreen.showDetails = [_showSearchResults objectAtIndex:[indexPath row]];
+    [self.navigationController pushViewController:addScreen animated:NO];
+
 }
 
 

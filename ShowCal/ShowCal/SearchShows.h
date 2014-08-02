@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "searchDetails.h"
+#import "AddShows.h"
 
-@interface SearchShows : UIViewController
+@interface SearchShows : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UISearchBar *searchShow;
 @property  NSString *showName;
 @property  NSString *startYear;
@@ -26,6 +27,7 @@
 @property BOOL boolStatus;
 @property BOOL boolSeasons;
 @property BOOL boolCountry;
-@property NSArray *showSearchResults;
+@property (strong, nonatomic) IBOutlet UITableView *table;
+@property NSMutableArray *showSearchResults;
 @end
 
