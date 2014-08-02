@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "searchDetails.h"
 
 @interface SearchShows : UIViewController
 @property (strong, nonatomic) IBOutlet UISearchBar *searchShow;
@@ -25,5 +26,6 @@
 @property BOOL boolStatus;
 @property BOOL boolSeasons;
 @property BOOL boolCountry;
+@property NSArray *showSearchResults;
 @end
 
