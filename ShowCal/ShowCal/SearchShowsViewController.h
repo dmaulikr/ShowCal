@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  SearchShowsViewController.h
 //  ShowCal
 //
 //  Created by Sid Raheja on 8/2/14.
@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SearchShows.h"
 
-
-@interface ViewController : UIViewController
+@interface SearchShowsViewController : UIViewController
 
 @end

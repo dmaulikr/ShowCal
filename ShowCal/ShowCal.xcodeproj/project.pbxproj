@@ -21,6 +21,7 @@
 		1F433092198CFEF000ED2326 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F433074198CFEF000ED2326 /* UIKit.framework */; };
 		1F43309A198CFEF000ED2326 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1F433098198CFEF000ED2326 /* InfoPlist.strings */; };
 		1F43309C198CFEF000ED2326 /* ShowCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F43309B198CFEF000ED2326 /* ShowCalTests.m */; };
+		1F4330A7198D03FC00ED2326 /* SearchShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330A6198D03FC00ED2326 /* SearchShows.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		1F433097198CFEF000ED2326 /* ShowCalTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShowCalTests-Info.plist"; sourceTree = "<group>"; };
 		1F433099198CFEF000ED2326 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1F43309B198CFEF000ED2326 /* ShowCalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowCalTests.m; sourceTree = "<group>"; };
+		1F4330A5198D03FC00ED2326 /* SearchShows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchShows.h; sourceTree = "<group>"; };
+		1F4330A6198D03FC00ED2326 /* SearchShows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchShows.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 		1F433076198CFEF000ED2326 /* ShowCal */ = {
 			isa = PBXGroup;
 			children = (
+				1F4330A5198D03FC00ED2326 /* SearchShows.h */,
+				1F4330A6198D03FC00ED2326 /* SearchShows.m */,
 				1F43307F198CFEF000ED2326 /* AppDelegate.h */,
 				1F433080198CFEF000ED2326 /* AppDelegate.m */,
 				1F433082198CFEF000ED2326 /* Main.storyboard */,
@@ -251,6 +256,7 @@
 			files = (
 				1F433087198CFEF000ED2326 /* ViewController.m in Sources */,
 				1F433081198CFEF000ED2326 /* AppDelegate.m in Sources */,
+				1F4330A7198D03FC00ED2326 /* SearchShows.m in Sources */,
 				1F43307D198CFEF000ED2326 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
