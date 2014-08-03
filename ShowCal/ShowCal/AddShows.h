@@ -12,4 +12,6 @@
 @interface AddShows : UIViewController
 @property (strong, nonatomic) IBOutlet UILabel *showLabel;
 @property searchDetails *showDetails;
+@property (strong, nonatomic) IBOutlet UIImageView *showImage;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @end

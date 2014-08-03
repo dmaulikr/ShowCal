@@ -107,6 +107,7 @@ int counter = 0;
     if([tagName isEqualToString:@"showid"])
     {
         _boolshowID = TRUE;
+        
     }
     if([tagName isEqualToString:@"name"])
     {
@@ -163,6 +164,7 @@ int counter = 0;
         shows.showID = string;
         //NSLog(@"Show id: %@", shows.showID);
         _boolshowID = false;
+        return;
     }
     if(_boolName)
     {
@@ -170,6 +172,7 @@ int counter = 0;
         shows.showName = string;
         //NSLog(@"Show Name: %@",shows.showName);
         _boolName = false;
+        return;
     }
     if(_boolCountry)
     {
@@ -177,6 +180,7 @@ int counter = 0;
         shows.country = string;
         //NSLog(@"Show Country: %@", shows.country);
         _boolCountry = false;
+        return;
     }
     if(_boolStart)
     {
@@ -184,18 +188,21 @@ int counter = 0;
         shows.startYear = string;
         //NSLog(@"Show Start: %@", shows.startYear);
         _boolStart = false;
+        return;
     }
     if(_boolEnd)
     {
         shows.endYear = string;
        // NSLog(@"Show End: %@", shows.endYear);
         _boolEnd = false;
+        return;
     }
     if(_boolStatus)
     {
         shows.status = string;
         //NSLog(@"Show Status: %@", shows.status);
         _boolStatus = false;
+        return;
     }
 }
 
