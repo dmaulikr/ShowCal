@@ -24,6 +24,7 @@
 		1F4330A7198D03FC00ED2326 /* SearchShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330A6198D03FC00ED2326 /* SearchShows.m */; };
 		1F4330B9198D5B9200ED2326 /* searchDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330B8198D5B9100ED2326 /* searchDetails.m */; };
 		1F4330BC198D7D8100ED2326 /* AddShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330BB198D7D8100ED2326 /* AddShows.m */; };
+		1F99E141198E617600BBCA33 /* futureEpisodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F99E140198E617600BBCA33 /* futureEpisodes.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		1F4330B8198D5B9100ED2326 /* searchDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = searchDetails.m; sourceTree = "<group>"; };
 		1F4330BA198D7D8100ED2326 /* AddShows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddShows.h; sourceTree = "<group>"; };
 		1F4330BB198D7D8100ED2326 /* AddShows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddShows.m; sourceTree = "<group>"; };
+		1F99E13F198E617600BBCA33 /* futureEpisodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futureEpisodes.h; sourceTree = "<group>"; };
+		1F99E140198E617600BBCA33 /* futureEpisodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = futureEpisodes.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,8 @@
 				1F433077198CFEF000ED2326 /* Supporting Files */,
 				1F4330B7198D5B9100ED2326 /* searchDetails.h */,
 				1F4330B8198D5B9100ED2326 /* searchDetails.m */,
+				1F99E13F198E617600BBCA33 /* futureEpisodes.h */,
+				1F99E140198E617600BBCA33 /* futureEpisodes.m */,
 			);
 			path = ShowCal;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F433087198CFEF000ED2326 /* ViewController.m in Sources */,
+				1F99E141198E617600BBCA33 /* futureEpisodes.m in Sources */,
 				1F433081198CFEF000ED2326 /* AppDelegate.m in Sources */,
 				1F4330BC198D7D8100ED2326 /* AddShows.m in Sources */,
 				1F4330B9198D5B9200ED2326 /* searchDetails.m in Sources */,
