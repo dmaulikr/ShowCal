@@ -155,8 +155,8 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd"];
         NSString *todaysDate = [formatter stringFromDate:[NSDate date]];
-        NSComparisonResult result = [string compare:todaysDate];
-        if(result == 1)
+        _result = [string compare:todaysDate];
+        if(_result == 1)
         {
             //NSLog(@"Future air date is: %@", string);
             Episodes.episodeDate = string;
@@ -187,4 +187,19 @@
 }
 */
 
+- (IBAction)calendarAdd:(id)sender
+{
+    if(_result)
+    {
+        NSLog(@"C");
+    }
+}
+
+- (IBAction)reminderAdd:(id)sender
+{
+    if(_result)
+    {
+        NSLog(@"R");
+    }
+}
 @end

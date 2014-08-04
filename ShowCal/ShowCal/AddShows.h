@@ -20,4 +20,7 @@
 @property BOOL episodeDate;
 @property BOOL episodeNumber;
 @property BOOL episodeTitle;
+@property NSComparisonResult result;
+- (IBAction)reminderAdd:(id)sender;
+- (IBAction)calendarAdd:(id)sender;
 @end
