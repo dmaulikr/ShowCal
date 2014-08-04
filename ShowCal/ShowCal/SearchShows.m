@@ -58,22 +58,85 @@ int counter = 0;
 
 - (void)handleSearch:(UISearchBar *)searchBar {
     
+
     _showSearchResults = [[NSMutableArray alloc] init];
     shows = [[searchDetails alloc] init];
     NSLog(@"User searched for %@", searchBar.text);
-    NSString *search = [searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *search = [searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     [searchBar resignFirstResponder]; // if you want the keyboard to go away
     NSString *apiString;
-    apiString = [NSString stringWithFormat:@"http://services.tvrage.com/feeds/search.php?show=%@", search];
+    apiString = [NSString stringWithFormat:@"http://www.omdbapi.com/?s=%@", search];
     NSLog(@"%@",apiString);
     NSURL *url = [[NSURL alloc]initWithString:apiString];
     NSLog((@"url is: %@"), url);
-    NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
-    [parser setDelegate:self];
-    NSLog(@"%hhd",[parser parse]);
+    //NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
+    //[parser setDelegate:self];
+    //NSLog(@"%hhd",[parser parse]);
+    NSError *error;
+    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
+    NSData *jsonData = [NSURLConnection sendSynchronousRequest:urlRequest
+                                             returningResponse:nil
+                                                         error:&error];
+    if (error)
+    {
+        NSLog(@"Fail to connect to the server!");
+    }
+    id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                 options:NSJSONReadingMutableLeaves
+                                                   error:&error];
+    //NSLog(@"testtsts: %@", [jsonObj objectForKey:@"Poster"]);
+    NSLog(@"object is: %@", jsonObj);
+    if (error)
+    {
+        NSLog(@"Fail to parse json data!");
+    }
+    NSDictionary *searchResults = [jsonObj objectForKey:@"Search"];
+    NSDictionary *title = [[NSDictionary alloc] init];
+    NSString *series;
+    for(title in searchResults)
+    {
+        series = [title objectForKey:@"Type"];
+        if([series isEqualToString:@"series"])
+        {
+            shows.showID =  [title objectForKey:@"imdbID"];
+            shows.showName = [title objectForKey:@"Title"];
+            shows.startYear = [title objectForKey:@"Year"];
+            NSString *apiString2;
+            apiString2 = [NSString stringWithFormat:@"http://www.omdbapi.com/?i=%@", shows.showID];
+            NSURL *url2 = [[NSURL alloc]initWithString:apiString2];
+           // NSLog((@"url is: %@"), url);
+            //NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url];
+            //[parser setDelegate:self];
+            //NSLog(@"%hhd",[parser parse]);
+            NSError *error2;
+            NSURLRequest *urlRequest2 = [[NSURLRequest alloc] initWithURL:url2];
+            NSData *jsonData2 = [NSURLConnection sendSynchronousRequest:urlRequest2
+                                                      returningResponse:nil
+                                                                  error:&error2];
+            if (error2)
+            {
+                NSLog(@"Fail to connect to the server!");
+            }
+            id jsonObj2 = [NSJSONSerialization JSONObjectWithData:jsonData2
+                                                          options:NSJSONReadingMutableLeaves
+                                                            error:&error];
+            //NSLog(@"testtsts: %@", [jsonObj objectForKey:@"Poster"]);
+            // NSLog(@"object is: %@", jsonObj);
+            if (error2)
+            {
+                NSLog(@"Fail to parse json data!");
+            }
+            NSURL *imageURL = [NSURL URLWithString:[jsonObj2 objectForKey:@"Poster"]];
+            shows.imageData = [NSData dataWithContentsOfURL:imageURL];
+            [_showSearchResults addObject:shows];
+            shows = [[searchDetails alloc] init];
+        }
+    }
     
-    [_table reloadData];
-   // _table = [[UITableView alloc] init];
+    
+    
+     [_table reloadData];
+    // _table = [[UITableView alloc] init];
     _table.delegate = self;
     _table.dataSource = self;
     // _table.rowHeight = self.view.frame.size.height * 0.1;
@@ -81,7 +144,9 @@ int counter = 0;
     _table.backgroundColor = [UIColor clearColor];
     _table.rowHeight = 80;
     _table.separatorColor = [UIColor clearColor];
-
+    //NSDictionary *title = [searchResults objectForKey:@"Title"];
+    //NSLog(@"STring is: %@", title);
+    
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar {
@@ -89,122 +154,6 @@ int counter = 0;
     [searchBar resignFirstResponder]; // if you want the keyboard to go away
 }
 
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
-{
-    NSString *tagName = elementName;
-    if ([tagName isEqualToString:@"classification"])
-    {
-        NSLog(@"Show Name is: %@", shows.showID);
-        if(shows.showName)
-        {
-            //Add to Array and table for search results
-            NSLog(@"Show Name is: %@", shows.showID);
-            [_showSearchResults addObject:shows];
-        }
-        shows = [[searchDetails alloc] init];
-
-    }
-    if([tagName isEqualToString:@"showid"])
-    {
-        _boolshowID = TRUE;
-        
-    }
-    if([tagName isEqualToString:@"name"])
-    {
-        _boolName = TRUE;
-    }
-    if([tagName isEqualToString:@"country"])
-    {
-        _boolCountry = TRUE;
-    }
-    if([tagName isEqualToString:@"started"])
-    {
-        _boolStart = TRUE;
-    }
-    if([tagName isEqualToString:@"ended"])
-    {
-        _boolEnd = TRUE;
-    }
-    if([tagName isEqualToString:@"status"])
-    {
-        _boolStatus = TRUE;
-    }
-    
-    if ([elementName isEqualToString:@"Results"])
-    {
-        NSLog(@"found Results");
-       // _showSearchResults = [[NSMutableArray alloc] init];
-        return;
-    }
-}
-
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
-{
-    //NSLog(@"Did end element");
-    
-    if ([elementName isEqualToString:@"Results"])
-    {
-        NSLog(@"Results end");
-       
-    }
-    
-}
-
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
-{
-    //NSString *x = string;
-    //NSLog(@"value2 is: %@", x);
-   // NSLog(@"bool show id is: %d", _boolshowID);
-    
-    if(_boolshowID)
-    {
-        //_showID = string;
-        shows.showID = string;
-        //NSLog(@"Show id: %@", shows.showID);
-        _boolshowID = false;
-        return;
-    }
-    if(_boolName)
-    {
-        //_showName = string;
-        shows.showName = string;
-        //NSLog(@"Show Name: %@",shows.showName);
-        _boolName = false;
-        return;
-    }
-    if(_boolCountry)
-    {
-        //_country = string;
-        shows.country = string;
-        //NSLog(@"Show Country: %@", shows.country);
-        _boolCountry = false;
-        return;
-    }
-    if(_boolStart)
-    {
-        //_startYear = string;
-        shows.startYear = string;
-        //NSLog(@"Show Start: %@", shows.startYear);
-        _boolStart = false;
-        return;
-    }
-    if(_boolEnd)
-    {
-        shows.endYear = string;
-       // NSLog(@"Show End: %@", shows.endYear);
-        _boolEnd = false;
-        return;
-    }
-    if(_boolStatus)
-    {
-        shows.status = string;
-        //NSLog(@"Show Status: %@", shows.status);
-        _boolStatus = false;
-        return;
-    }
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -215,17 +164,29 @@ int counter = 0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *simpleTableIdentifier = @"SimpleTableItem";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    static NSString *cellIdentifier = @"Cell";
+    customCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
+    // Configure the cell...
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell = [[customCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    searchDetails *temp = [_showSearchResults objectAtIndex:[indexPath row]];
-    cell.textLabel.text = temp.showName;
-    NSLog((@"name is: %@", temp.showName));
+    
+    
+    searchDetails *temp = [[searchDetails alloc] init];
+    temp= [_showSearchResults objectAtIndex:indexPath.row];
+    UIImageView *showImageView = [[UIImageView alloc] init];
+    showImageView.image = [UIImage imageWithData:temp.imageData];
+    cell.customImage = showImageView;
+    
+    UILabel *showName = [[UILabel alloc] init];
+    showName.text = temp.showName;
+    cell.customLabelShowName = showName;
+    
+    cell.customDescriptionLabel = showName;
     return cell;
+    
     /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -245,14 +206,6 @@ int counter = 0;
     return cell;*/
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
-    AddShows *addScreen = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"add"];
-    addScreen.showDetails = [_showSearchResults objectAtIndex:[indexPath row]];
-    [self.navigationController pushViewController:addScreen animated:NO];
-
-}
 
 
 /*

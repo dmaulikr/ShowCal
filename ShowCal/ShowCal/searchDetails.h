@@ -18,5 +18,6 @@
 @property  NSString *country;
 @property  NSString *imageUrlString;
 @property  NSString *showID;
+@property NSData *imageData;
 @end
 

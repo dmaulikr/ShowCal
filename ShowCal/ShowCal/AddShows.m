@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     _showLabel.text = _showDetails.showName;
     _showLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _showLabel.numberOfLines = 0;
@@ -88,6 +89,9 @@
             NSLog(@"Count is: %lu", (unsigned long)[_futureEpisodesArray count]);
             NSString *statusText = [NSString stringWithFormat:@"%@\nAir Date: %@",
                                     temp.episodeTitle, temp.episodeDate];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd"];
+            _reminderDate = [dateFormat dateFromString:temp.episodeDate];
             _statusLabel.lineBreakMode = NSLineBreakByWordWrapping;
             _statusLabel.numberOfLines = 0;
             _statusLabel.text =statusText;
@@ -200,6 +204,51 @@
     if(_result)
     {
         NSLog(@"R");
+        if (_eventStore == nil)
+        {
+            _eventStore = [[EKEventStore alloc]init];
+            
+            [_eventStore requestAccessToEntityType:EKEntityTypeReminder completion:^(BOOL granted, NSError *error) {
+                
+                if (!granted)
+                    NSLog(@"Access to store not granted");
+                else
+                {
+                    if (_eventStore != nil)
+                        [self createReminder];
+                }
+            }];
+        }
+        
+        
     }
 }
+
+-(void)createReminder
+{
+    EKReminder *reminder = [EKReminder
+                            reminderWithEventStore:self.eventStore];
+    
+    reminder.title = _showDetails.showName;
+    
+    reminder.calendar = [_eventStore defaultCalendarForNewReminders];
+    
+    EKAlarm *alarm = [EKAlarm alarmWithAbsoluteDate:_reminderDate];
+    
+    [reminder addAlarm:alarm];
+    
+    NSError *error = nil;
+    
+    [_eventStore saveReminder:reminder commit:YES error:&error];
+    
+    if (error)
+        NSLog(@"error = %@", error);
+    else
+    {
+        NSLog(@"Reminder has been set!");
+
+    }
+    
+}
+
 @end

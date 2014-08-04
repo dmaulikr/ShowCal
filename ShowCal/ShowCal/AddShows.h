@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 #import "searchDetails.h"
 #import "futureEpisodes.h"
 
@@ -21,6 +23,8 @@
 @property BOOL episodeNumber;
 @property BOOL episodeTitle;
 @property NSComparisonResult result;
+@property (strong, nonatomic) EKEventStore *eventStore;
+@property (strong, nonatomic) NSDate *reminderDate;
 - (IBAction)reminderAdd:(id)sender;
 - (IBAction)calendarAdd:(id)sender;
 @end
