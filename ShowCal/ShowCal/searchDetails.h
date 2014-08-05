@@ -12,11 +12,7 @@
 @property   NSNumber *position;
 @property  NSString *showName;
 @property  NSString *startYear;
-@property  NSString *endYear;
-@property  NSString *status;
-@property  NSString *seasons;
-@property  NSString *country;
-@property  NSString *imageUrlString;
+@property  NSURL *imageUrlString;
 @property  NSString *showID;
 @property NSData *imageData;
 @end

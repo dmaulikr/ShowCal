@@ -68,7 +68,7 @@
     Episodes = [[futureEpisodes alloc] init];
     _futureEpisodesArray = [[NSMutableArray alloc] init];
     
-    if(![_showDetails.status isEqualToString:@"Returning Series"] && ![_showDetails.endYear isEqual: @"0"])
+    /*if(![_showDetails.status isEqualToString:@"Returning Series"] && ![_showDetails.endYear isEqual: @"0"])
     {
         _statusLabel.text = @"Show has Ended";
     }
@@ -103,7 +103,7 @@
             _statusLabel.text =@"No further dates announced! Check again later!";
         }
     }
-    
+    */
     //NSLog(@"todays date is: %@", todaysDate);
     //NSLog(@"Status: %@", _showDetails.status);
     

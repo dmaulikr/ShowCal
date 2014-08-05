@@ -10,6 +10,7 @@
 #import "searchDetails.h"
 #import "AddShows.h"
 #import "customCellTableViewCell.h"
+#import "ViewController.h"
 
 @interface SearchShows : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UISearchBar *searchShow;

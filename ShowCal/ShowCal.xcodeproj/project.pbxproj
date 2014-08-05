@@ -24,6 +24,7 @@
 		1F4330A7198D03FC00ED2326 /* SearchShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330A6198D03FC00ED2326 /* SearchShows.m */; };
 		1F4330B9198D5B9200ED2326 /* searchDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330B8198D5B9100ED2326 /* searchDetails.m */; };
 		1F4330BC198D7D8100ED2326 /* AddShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330BB198D7D8100ED2326 /* AddShows.m */; };
+		1F817DD81990140E00FFD284 /* savedShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F817DD71990140E00FFD284 /* savedShows.m */; };
 		1F99E141198E617600BBCA33 /* futureEpisodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F99E140198E617600BBCA33 /* futureEpisodes.m */; };
 		1F99E144198FBE7000BBCA33 /* customCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F99E143198FBE7000BBCA33 /* customCellTableViewCell.m */; };
 /* End PBXBuildFile section */
@@ -64,6 +65,8 @@
 		1F4330B8198D5B9100ED2326 /* searchDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = searchDetails.m; sourceTree = "<group>"; };
 		1F4330BA198D7D8100ED2326 /* AddShows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddShows.h; sourceTree = "<group>"; };
 		1F4330BB198D7D8100ED2326 /* AddShows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddShows.m; sourceTree = "<group>"; };
+		1F817DD61990140E00FFD284 /* savedShows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = savedShows.h; sourceTree = "<group>"; };
+		1F817DD71990140E00FFD284 /* savedShows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = savedShows.m; sourceTree = "<group>"; };
 		1F99E13F198E617600BBCA33 /* futureEpisodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futureEpisodes.h; sourceTree = "<group>"; };
 		1F99E140198E617600BBCA33 /* futureEpisodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = futureEpisodes.m; sourceTree = "<group>"; };
 		1F99E142198FBE7000BBCA33 /* customCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customCellTableViewCell.h; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 				1F99E140198E617600BBCA33 /* futureEpisodes.m */,
 				1F99E142198FBE7000BBCA33 /* customCellTableViewCell.h */,
 				1F99E143198FBE7000BBCA33 /* customCellTableViewCell.m */,
+				1F817DD61990140E00FFD284 /* savedShows.h */,
+				1F817DD71990140E00FFD284 /* savedShows.m */,
 			);
 			path = ShowCal;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				1F433081198CFEF000ED2326 /* AppDelegate.m in Sources */,
 				1F4330BC198D7D8100ED2326 /* AddShows.m in Sources */,
 				1F4330B9198D5B9200ED2326 /* searchDetails.m in Sources */,
+				1F817DD81990140E00FFD284 /* savedShows.m in Sources */,
 				1F4330A7198D03FC00ED2326 /* SearchShows.m in Sources */,
 				1F43307D198CFEF000ED2326 /* main.m in Sources */,
 			);
@@ -414,7 +420,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShowCal/ShowCal-Prefix.pch";
 				INFOPLIST_FILE = "ShowCal/ShowCal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -432,7 +438,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShowCal/ShowCal-Prefix.pch";
 				INFOPLIST_FILE = "ShowCal/ShowCal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

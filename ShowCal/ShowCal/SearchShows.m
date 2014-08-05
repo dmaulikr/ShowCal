@@ -127,6 +127,7 @@ int counter = 0;
                 NSLog(@"Fail to parse json data!");
             }
             NSURL *imageURL = [NSURL URLWithString:[jsonObj2 objectForKey:@"Poster"]];
+            shows.imageUrlString = imageURL;
             shows.imageData = [NSData dataWithContentsOfURL:imageURL];
             [_showSearchResults addObject:shows];
             shows = [[searchDetails alloc] init];
@@ -165,26 +166,25 @@ int counter = 0;
 {
     
     
-    static NSString *cellIdentifier = @"Cell";
-    customCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    // Configure the cell...
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyIdentifier"];
     if (cell == nil) {
-        cell = [[customCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    
     searchDetails *temp = [[searchDetails alloc] init];
-    temp= [_showSearchResults objectAtIndex:indexPath.row];
-    UIImageView *showImageView = [[UIImageView alloc] init];
-    showImageView.image = [UIImage imageWithData:temp.imageData];
-    cell.customImage = showImageView;
-    
-    UILabel *showName = [[UILabel alloc] init];
-    showName.text = temp.showName;
-    cell.customLabelShowName = showName;
-    
-    cell.customDescriptionLabel = showName;
+    temp = [_showSearchResults objectAtIndex:indexPath.row];
+    cell.textLabel.text = temp.showName;
+    cell.textLabel.font = [UIFont systemFontOfSize:24];
+    cell.textLabel.numberOfLines = 0;
+    if([temp.startYear length] == 5)
+        {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@Present", temp.startYear];
+        }
+    else
+        {
+             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", temp.startYear];
+        }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; 
     return cell;
     
     /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
@@ -207,7 +207,46 @@ int counter = 0;
 }
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+     ViewController *homeScreen = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"home"];
+    searchDetails *temp = [[searchDetails alloc] init];
+    temp = [_showSearchResults objectAtIndex:indexPath.row];
+    if([temp.startYear length] == 5)
+    {
+        NSLog(@"Adding!");
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *docDir = [paths objectAtIndex: 0];
+        NSString* docFile = [docDir stringByAppendingPathComponent: @"Storage"];
+        savedShows *s = [[savedShows alloc] init];
+        NSMutableArray *s2 = [[NSMutableArray alloc] init];
+        s2 = [NSKeyedUnarchiver unarchiveObjectWithFile:docFile];
+        NSLog(@"TESTING: %@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
 
+        s.showSaved = temp;
+        homeScreen.saved = s;
+        [s2 addObject:s];
+        homeScreen.allSavedShows = s2;
+
+        [NSKeyedArchiver archiveRootObject:homeScreen.allSavedShows toFile:docFile];
+        NSLog(@"Data Saved");
+        
+        
+
+        
+
+        //Need to get tvrage id for episode listß
+        
+    }
+    else
+    {
+        NSLog(@"Show cannot be added! It is over!");
+    }
+   
+    [self.navigationController pushViewController:homeScreen animated:NO];
+
+}
 /*
 #pragma mark - Navigation
 

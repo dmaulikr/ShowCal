@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "SearchShows.h"
+#import "savedShows.h"
 
 
 @interface ViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UITableView *savedTableShows;
+@property savedShows *saved;
+@property NSMutableArray *allSavedShows;
+@property NSString *fileName;
+@property int test;
 @end
+
+
