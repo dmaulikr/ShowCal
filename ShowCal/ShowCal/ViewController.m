@@ -18,21 +18,36 @@
 
 - (void)viewDidLoad
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex: 0];
-    NSString* docFile = [docDir stringByAppendingPathComponent: @"Storage"];
-    _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithFile:docFile];
-
-    NSLog(@"TESTING: %@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
-    NSLog(@"Count of array is: %lu", (unsigned long)_allSavedShows.count);
-    NSLog(@"INT: %d", _test);
-    NSArray *path = NSSearchPathForDirectoriesInDomains(
-                                                       NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *folder = [path objectAtIndex:0];
-    NSLog(@"Your NSUserDefaults are stored in this folder: %@/Preferences", folder);
+    
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-   
+    NSFileManager *filemgr;
+    NSString *dataFile;
+    NSString *docsDir;
+    NSArray *dirPaths;
+    
+    filemgr = [NSFileManager defaultManager];
+    
+    // Identify the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                   NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    docsDir = dirPaths[0];
+    
+    // Build the path to the data file
+    dataFile = [docsDir stringByAppendingPathComponent:
+                @"datafile.dat"];
+    
+    // Check if the file already exists
+    if ([filemgr fileExistsAtPath: dataFile])
+    {
+        // Read file contents and display in textBox
+        NSData *databuffer;
+        databuffer = [filemgr contentsAtPath: dataFile];
+       _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
+    }
+
+
 
     //Table deletion method
     self.savedTableShows.allowsMultipleSelectionDuringEditing = NO;
@@ -144,10 +159,26 @@
         NSLog(@"Delete!");
         [_allSavedShows removeObjectAtIndex:indexPath.row];
         [_savedTableShows reloadData];
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex: 0];
-        NSString* docFile = [docDir stringByAppendingPathComponent: @"Storage"];
-        [NSKeyedArchiver archiveRootObject:_allSavedShows toFile:docFile];
+        NSFileManager *filemgr;
+        NSString *dataFile;
+        NSString *docsDir;
+        NSArray *dirPaths;
+        
+        filemgr = [NSFileManager defaultManager];
+        
+        dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                       NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        docsDir = dirPaths[0];
+        dataFile = [docsDir
+                    stringByAppendingPathComponent: @"datafile.dat"];
+        NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:_allSavedShows];
+        [filemgr createFileAtPath: dataFile
+                         contents: databuffer attributes:nil];
+        
+        NSLog(@"Data Saved");
+
+
         
     }
 }

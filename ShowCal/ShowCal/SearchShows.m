@@ -216,20 +216,51 @@ int counter = 0;
     if([temp.startYear length] == 5)
     {
         NSLog(@"Adding!");
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex: 0];
-        NSString* docFile = [docDir stringByAppendingPathComponent: @"Storage"];
         savedShows *s = [[savedShows alloc] init];
         NSMutableArray *s2 = [[NSMutableArray alloc] init];
-        s2 = [NSKeyedUnarchiver unarchiveObjectWithFile:docFile];
-        NSLog(@"TESTING: %@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
-
+        NSFileManager *filemgr;
+        NSString *dataFile;
+        NSString *docsDir;
+        NSArray *dirPaths;
+        
+        filemgr = [NSFileManager defaultManager];
+        
+        // Identify the documents directory
+        dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                       NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        docsDir = dirPaths[0];
+        
+        // Build the path to the data file
+        dataFile = [docsDir stringByAppendingPathComponent:
+                    @"datafile.dat"];
+        
+        // Check if the file already exists
+        if ([filemgr fileExistsAtPath: dataFile])
+        {
+            // Read file contents and display in textBox
+            NSData *databuffer;
+            databuffer = [filemgr contentsAtPath: dataFile];
+            s2 = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
+        }
         s.showSaved = temp;
         homeScreen.saved = s;
         [s2 addObject:s];
         homeScreen.allSavedShows = s2;
+        
+        
+            filemgr = [NSFileManager defaultManager];
+            
+            dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                           NSDocumentDirectory, NSUserDomainMask, YES);
+            
+            docsDir = dirPaths[0];
+            dataFile = [docsDir
+                        stringByAppendingPathComponent: @"datafile.dat"];
+            NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:homeScreen.allSavedShows];
+            [filemgr createFileAtPath: dataFile
+                             contents: databuffer attributes:nil];
 
-        [NSKeyedArchiver archiveRootObject:homeScreen.allSavedShows toFile:docFile];
         NSLog(@"Data Saved");
         
         
@@ -257,5 +288,7 @@ int counter = 0;
     // Pass the selected object to the new view controller.
 }
 */
+
+
 
 @end
