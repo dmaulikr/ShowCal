@@ -14,6 +14,8 @@
 @property  NSString *startYear;
 @property  NSURL *imageUrlString;
 @property  NSString *showID;
+@property NSString *network;
+@property NSString *time;
 @property NSData *imageData;
 @end
 

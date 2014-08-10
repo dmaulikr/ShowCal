@@ -175,7 +175,7 @@ int counter = 0;
     temp = [_showSearchResults objectAtIndex:indexPath.row];
     cell.textLabel.text = temp.showName;
     cell.textLabel.font = [UIFont systemFontOfSize:24];
-    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.numberOfLines = 2;
     if([temp.startYear length] == 5)
         {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@Present", temp.startYear];
@@ -216,6 +216,41 @@ int counter = 0;
     if([temp.startYear length] == 5)
     {
         NSLog(@"Adding!");
+        NSString *search = [temp.showName stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        NSString *apiString;
+        apiString = [NSString stringWithFormat:@"http://api.trakt.tv/search/shows.json/bb9fd567df5f4903cbed444881f93251?query=%@", search];
+        NSURL *url = [[NSURL alloc]initWithString:apiString];
+        NSError *error;
+        NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:url];
+        NSData *jsonData = [NSURLConnection sendSynchronousRequest:urlRequest
+                                                 returningResponse:nil
+                                                             error:&error];
+        if (error)
+        {
+            NSLog(@"Fail to connect to the server!");
+        }
+        id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                     options:NSJSONReadingMutableLeaves
+                                                       error:&error];
+        //NSLog(@"testtsts: %@", [jsonObj objectForKey:@"Poster"]);
+        NSDictionary *showMatch = [[NSDictionary alloc] init];
+        for(showMatch in jsonObj)
+        {
+            NSString *matchName = [showMatch objectForKey:@"title"];
+            bool ended  = [showMatch objectForKey:@"ended"];
+            if([matchName isEqualToString:temp.showName] && ended)
+            {
+                NSLog(@"Found");
+                temp.showID = [showMatch objectForKey:@"tvrage_id"];
+                NSLog(@"ID IS: %@", temp.showID);
+                temp.network = [showMatch objectForKey:@"network"];
+                temp.time = [showMatch objectForKey:@"air_time"];
+                break;
+            }
+                                                
+        }
+        
+
         savedShows *s = [[savedShows alloc] init];
         NSMutableArray *s2 = [[NSMutableArray alloc] init];
         NSFileManager *filemgr;

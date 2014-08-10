@@ -104,10 +104,26 @@
    // [self presentModalViewController:vc animated:YES];
 
 }
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [_allSavedShows count]; //array count returns 10
+}
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    
+    return 1;// this should be one because it will create space between two cells if you want space between 4 cells you can modify it.
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [_allSavedShows count];
+    return 50.0; // you can have your own choice, of course
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor clearColor];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -119,7 +135,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    _saved = [_allSavedShows objectAtIndex:indexPath.row];
+    _saved = [_allSavedShows objectAtIndex:indexPath.section];
     searchDetails *temp = [[searchDetails alloc] init];
     temp = _saved.showSaved;
     cell.textLabel.text = temp.showName;
@@ -157,7 +173,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Delete!");
-        [_allSavedShows removeObjectAtIndex:indexPath.row];
+        [_allSavedShows removeObjectAtIndex:indexPath.section];
         [_savedTableShows reloadData];
         NSFileManager *filemgr;
         NSString *dataFile;
