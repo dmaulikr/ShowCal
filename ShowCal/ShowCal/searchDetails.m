@@ -17,6 +17,10 @@
     [encoder encodeObject:_showID forKey:@"showID"];
     [encoder encodeObject:_imageData forKey:@"imageData"];
     [encoder encodeObject:_imageUrlString forKey:@"imageUrlString"];
+    [encoder encodeObject:_time forKey:@"time"];
+    [encoder encodeObject:_network forKey:@"network"];
+    [encoder encodeObject:_futureEpisodesDate forKey:@"futureDate"];
+    [encoder encodeObject:_futureEpisodesTitle forKey:@"futureTitle"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -27,6 +31,12 @@
         self.showID = [decoder decodeObjectForKey:@"showID"];
         self.imageData = [decoder decodeObjectForKey:@"imageData"];
         self.imageUrlString = [decoder decodeObjectForKey:@"imageUrlString"];
+        self.time = [decoder decodeObjectForKey:@"time"];
+        self.network = [decoder decodeObjectForKey:@"network"];
+        self.futureEpisodesDate = [decoder decodeObjectForKey:@"futureDate"];
+        self.futureEpisodesTitle = [decoder decodeObjectForKey:@"futureTitle"];
+
+        
     }
     return self;
 }

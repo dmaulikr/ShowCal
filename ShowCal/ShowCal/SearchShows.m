@@ -15,6 +15,7 @@
 @implementation SearchShows
 {
     searchDetails *shows;
+    futureEpisodes *Episodes;
 }
 
 int counter = 0;
@@ -37,6 +38,8 @@ int counter = 0;
     _searchShow.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _showSearchResults = [[NSMutableArray alloc] init];
     shows = [[searchDetails alloc] init];
+    Episodes = [[futureEpisodes alloc] init];
+    _futureEpisodes = [[NSMutableArray alloc] init];
 
     //[_showSearchResults addObject:shows];
 
@@ -247,9 +250,15 @@ int counter = 0;
                 temp.time = [showMatch objectForKey:@"air_time"];
                 break;
             }
-                                                
         }
-        
+        NSString *apiString2;
+        apiString2 = [NSString stringWithFormat:@"http://services.tvrage.com/feeds/episode_list.php?sid=%@", temp.showID];
+        NSURL *url2 = [[NSURL alloc]initWithString:apiString2];
+        NSLog(@"url is: %@", url2);
+        NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url2];
+        [parser setDelegate:self];
+         NSLog(@"%hhd",[parser parse]);
+        NSLog(@"Future episodes are: %lu", (unsigned long)[_futureEpisodes count]);
 
         savedShows *s = [[savedShows alloc] init];
         NSMutableArray *s2 = [[NSMutableArray alloc] init];
@@ -278,8 +287,18 @@ int counter = 0;
             databuffer = [filemgr contentsAtPath: dataFile];
             s2 = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
         }
+        temp.futureEpisodesDate = [[NSMutableArray alloc] init];
+        temp.futureEpisodesTitle = [[NSMutableArray alloc] init];
+
+        for(int i = 0; i < _futureEpisodes.count; ++i)
+        {
+            futureEpisodes *temp2 = [[futureEpisodes alloc] init];
+            temp2 = [_futureEpisodes objectAtIndex:i];
+            [temp.futureEpisodesTitle addObject:temp2.episodeTitle];
+            [temp.futureEpisodesDate addObject:temp2.episodeDate];
+        }
         s.showSaved = temp;
-        homeScreen.saved = s;
+       //homeScreen.saved = s;
         [s2 addObject:s];
         homeScreen.allSavedShows = s2;
         
@@ -302,7 +321,6 @@ int counter = 0;
 
         
 
-        //Need to get tvrage id for episode listß
         
     }
     else
@@ -313,6 +331,69 @@ int counter = 0;
     [self.navigationController pushViewController:homeScreen animated:NO];
 
 }
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
+{
+    NSString *tagName = elementName;
+    if ([tagName isEqualToString:@"airdate"])
+    {
+        _episodeDate = true;
+    }
+    if ([tagName isEqualToString:@"title"])
+    {
+        _episodeTitle = true;
+    }
+    if(Episodes.episodeDate && Episodes.episodeTitle)
+    {
+        //NSLog(@"title is: %@", Episodes.episodeDate);
+        [_futureEpisodes addObject: Episodes];
+        Episodes = [[futureEpisodes alloc] init];
+        
+    }
+}
+
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
+    //NSLog(@"Did end element");
+    if(Episodes.episodeDate && Episodes.episodeTitle)
+    {
+        //NSLog(@"title is: %@", Episodes.episodeDate);
+        [_futureEpisodes addObject: Episodes];
+        Episodes = [[futureEpisodes alloc] init];
+        
+    }
+    
+}
+
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
+    
+    if(_episodeDate)
+    {
+        
+       // NSLog(@"airdate is: %@", string);
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *todaysDate = [formatter stringFromDate:[NSDate date]];
+        _result = [string compare:todaysDate];
+        if(_result == 1)
+        {
+            Episodes.episodeDate = string;
+        }
+        _episodeDate = false;
+    }
+    if(_episodeTitle)
+    {
+        if(_result == 1)
+        {
+            Episodes.episodeTitle = string;
+        }
+        _episodeTitle = false;
+    }
+}
+
 /*
 #pragma mark - Navigation
 

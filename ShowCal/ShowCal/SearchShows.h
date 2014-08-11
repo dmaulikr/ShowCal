@@ -10,7 +10,9 @@
 #import "searchDetails.h"
 #import "AddShows.h"
 #import "customCellTableViewCell.h"
+#import "futureEpisodes.h"
 #import "ViewController.h"
+
 
 @interface SearchShows : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) IBOutlet UISearchBar *searchShow;
@@ -29,7 +31,12 @@
 @property BOOL boolStatus;
 @property BOOL boolSeasons;
 @property BOOL boolCountry;
+@property BOOL episodeDate;
+@property BOOL episodeNumber;
+@property BOOL episodeTitle;
+@property NSComparisonResult result;
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property NSMutableArray *showSearchResults;
+@property NSMutableArray *futureEpisodes;
 @end
 

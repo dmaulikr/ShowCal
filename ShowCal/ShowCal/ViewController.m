@@ -46,7 +46,10 @@
         databuffer = [filemgr contentsAtPath: dataFile];
        _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
     }
+    
+    
 
+    
 
 
     //Table deletion method
@@ -143,6 +146,16 @@
     cell.textLabel.numberOfLines = 0;
     NSData *showImage = [NSData dataWithContentsOfURL:temp.imageUrlString];
     cell.imageView.image = [UIImage imageWithData:showImage];
+    cell.detailTextLabel.numberOfLines = 0;
+    if(temp.futureEpisodesDate.count)
+    {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ airs on %@ on %@ at %@", [temp.futureEpisodesTitle objectAtIndex:0], temp.network, [temp.futureEpisodesDate objectAtIndex:0], temp.time];
+    }
+    else
+    {
+        cell.detailTextLabel.text = @"No future episodes announced!";
+    }
+
     return cell;
     
     /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];

@@ -17,5 +17,7 @@
 @property NSString *network;
 @property NSString *time;
 @property NSData *imageData;
+@property NSMutableArray *futureEpisodesDate;
+@property NSMutableArray *futureEpisodesTitle;
 @end
 

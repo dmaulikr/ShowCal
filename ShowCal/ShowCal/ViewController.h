@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SearchShows.h"
 #import "savedShows.h"
+#import "futureEpisodes.h"
 
 
 @interface ViewController : UIViewController
@@ -17,7 +18,7 @@
 @property savedShows *saved;
 @property NSMutableArray *allSavedShows;
 @property NSString *fileName;
-@property int test;
+@property NSMutableArray *futureEpisodesArray;
 @end
 
 
