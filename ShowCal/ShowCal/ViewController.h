@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <EventKit/EventKit.h>
 #import "SearchShows.h"
 #import "savedShows.h"
 #import "futureEpisodes.h"

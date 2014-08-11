@@ -47,7 +47,6 @@
        _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
     }
     
-    
 
     
 
@@ -177,6 +176,44 @@
      return cell;*/
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    _saved = [_allSavedShows objectAtIndex:indexPath.section];
+    searchDetails *temp = [[searchDetails alloc] init];
+    temp = _saved.showSaved;
+    if(temp.futureEpisodesDate.count)
+    {
+        for(int i = 0; i < temp.futureEpisodesDate.count; ++i)
+        {
+            NSString *str = [NSString stringWithFormat:@"%@ %@",
+                             [temp.futureEpisodesDate objectAtIndex:i], temp.time];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd hh:mma"];
+            NSTimeZone *zone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
+            [formatter setTimeZone:zone];
+            NSDate *date = [formatter dateFromString:str];
+            EKEventStore *store = [[EKEventStore alloc] init];
+            [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (!granted) { return; }
+                EKEvent *event = [EKEvent eventWithEventStore:store];
+                event.title = [NSString stringWithFormat:@"New %@ episode on %@", temp.showName, temp.network];
+                event.startDate = [date dateByAddingTimeInterval:-60*15];
+                NSLog(@"startDate is : %@", event.startDate);
+                event.endDate = [event.startDate dateByAddingTimeInterval:60*15];
+                [event setCalendar:[store defaultCalendarForNewEvents]];
+                [event addAlarm:[EKAlarm alarmWithAbsoluteDate:event.startDate]];
+                NSError *err = nil;
+                [store saveEvent:event span:EKSpanThisEvent commit:YES error:&err];
+                NSLog(@"identifier: %@",event.eventIdentifier);  //this is so you can access this event later
+            }];
+        }
+    }
+    else
+    {
+        //add notification for no announced dates!
+    }
+  
+}
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return YES if you want the specified item to be editable.
     return YES;

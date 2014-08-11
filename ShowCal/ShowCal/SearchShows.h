@@ -38,5 +38,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property NSMutableArray *showSearchResults;
 @property NSMutableArray *futureEpisodes;
+;
 @end
 

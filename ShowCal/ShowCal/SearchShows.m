@@ -9,7 +9,6 @@
 #import "SearchShows.h"
 
 @interface SearchShows ()
-
 @end
 
 @implementation SearchShows
@@ -257,7 +256,7 @@ int counter = 0;
         NSLog(@"url is: %@", url2);
         NSXMLParser *parser = [[NSXMLParser alloc]initWithContentsOfURL:url2];
         [parser setDelegate:self];
-         NSLog(@"%hhd",[parser parse]);
+        [parser parse];
         NSLog(@"Future episodes are: %lu", (unsigned long)[_futureEpisodes count]);
 
         savedShows *s = [[savedShows alloc] init];
