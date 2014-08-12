@@ -19,5 +19,6 @@
 @property NSData *imageData;
 @property NSMutableArray *futureEpisodesDate;
 @property NSMutableArray *futureEpisodesTitle;
+@property NSMutableArray *calendarList;
 @end
 

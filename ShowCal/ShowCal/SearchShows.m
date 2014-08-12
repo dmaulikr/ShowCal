@@ -288,6 +288,7 @@ int counter = 0;
         }
         temp.futureEpisodesDate = [[NSMutableArray alloc] init];
         temp.futureEpisodesTitle = [[NSMutableArray alloc] init];
+        temp.calendarList = [[NSMutableArray alloc] init];
 
         for(int i = 0; i < _futureEpisodes.count; ++i)
         {

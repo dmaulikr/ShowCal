@@ -183,6 +183,15 @@
     temp = _saved.showSaved;
     if(temp.futureEpisodesDate.count)
     {
+         EKEventStore *store = [[EKEventStore alloc] init];
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (!granted) { return; }
+            if(temp.calendarList.count)
+            {
+                //notification show is already added to calendar
+                NSLog(@"Show already added!");
+                return;
+            }
         for(int i = 0; i < temp.futureEpisodesDate.count; ++i)
         {
             NSString *str = [NSString stringWithFormat:@"%@ %@",
@@ -192,21 +201,46 @@
             NSTimeZone *zone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
             [formatter setTimeZone:zone];
             NSDate *date = [formatter dateFromString:str];
-            EKEventStore *store = [[EKEventStore alloc] init];
-            [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-                if (!granted) { return; }
-                EKEvent *event = [EKEvent eventWithEventStore:store];
-                event.title = [NSString stringWithFormat:@"New %@ episode on %@", temp.showName, temp.network];
+            EKEvent *event = [EKEvent eventWithEventStore:store];
+                event.title = [NSString stringWithFormat:@"New episode of %@ on %@ today", temp.showName, temp.network];
                 event.startDate = [date dateByAddingTimeInterval:-60*15];
-                NSLog(@"startDate is : %@", event.startDate);
                 event.endDate = [event.startDate dateByAddingTimeInterval:60*15];
                 [event setCalendar:[store defaultCalendarForNewEvents]];
                 [event addAlarm:[EKAlarm alarmWithAbsoluteDate:event.startDate]];
                 NSError *err = nil;
                 [store saveEvent:event span:EKSpanThisEvent commit:YES error:&err];
-                NSLog(@"identifier: %@",event.eventIdentifier);  //this is so you can access this event later
-            }];
-        }
+                if(err)
+                {
+                    //notification to let user no not added
+                }
+                else
+                {
+                    //notification successfuly added
+                    NSLog(@"ADDED!");
+                }
+            [temp.calendarList addObject:event.eventIdentifier];
+            NSFileManager *filemgr;
+            NSString *dataFile;
+            NSString *docsDir;
+            NSArray *dirPaths;
+            
+            filemgr = [NSFileManager defaultManager];
+            
+            dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                           NSDocumentDirectory, NSUserDomainMask, YES);
+            
+            docsDir = dirPaths[0];
+            dataFile = [docsDir
+                        stringByAppendingPathComponent: @"datafile.dat"];
+            NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:_allSavedShows];
+            [filemgr createFileAtPath: dataFile
+                             contents: databuffer attributes:nil];
+            
+            NSLog(@"Data Saved");
+
+                //NSLog(@"identifier: %@",event.eventIdentifier);  //this is so you can access this event later
+            }
+        }];
     }
     else
     {
@@ -223,6 +257,30 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Delete!");
+        NSLog(@"true: %@", [_allSavedShows objectAtIndex:indexPath.section]);
+        _saved = [_allSavedShows objectAtIndex:indexPath.section];
+        EKEventStore* store = [[EKEventStore alloc] init];
+        [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (!granted) { return; }
+            searchDetails *temp = [[searchDetails alloc] init];
+            temp = _saved.showSaved;
+            for(int i = 0; i < temp.calendarList.count; ++i)
+            {
+                EKEvent* eventToRemove = [store eventWithIdentifier:[temp.calendarList objectAtIndex:i]];
+                if (eventToRemove) {
+                    NSError* error = nil;
+                    [store removeEvent:eventToRemove span:EKSpanThisEvent commit:YES error:&error];
+                    if(error)
+                    {
+                        //notification to let know user data has been deleted from calednar
+                    }
+                    else
+                    {
+                        //notification deleted from calendar
+                    }
+                }
+            }
+        }];
         [_allSavedShows removeObjectAtIndex:indexPath.section];
         [_savedTableShows reloadData];
         NSFileManager *filemgr;

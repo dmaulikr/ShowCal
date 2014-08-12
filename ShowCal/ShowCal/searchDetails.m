@@ -21,6 +21,7 @@
     [encoder encodeObject:_network forKey:@"network"];
     [encoder encodeObject:_futureEpisodesDate forKey:@"futureDate"];
     [encoder encodeObject:_futureEpisodesTitle forKey:@"futureTitle"];
+    [encoder encodeObject:_calendarList forKey:@"calendarList"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -35,6 +36,7 @@
         self.network = [decoder decodeObjectForKey:@"network"];
         self.futureEpisodesDate = [decoder decodeObjectForKey:@"futureDate"];
         self.futureEpisodesTitle = [decoder decodeObjectForKey:@"futureTitle"];
+        self.calendarList = [decoder decodeObjectForKey:@"calendarList"];
 
         
     }
