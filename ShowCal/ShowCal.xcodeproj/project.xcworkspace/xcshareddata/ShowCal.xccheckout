@@ -10,6 +10,8 @@
 	<string>ShowCal</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>1FA9D389-44C6-42FD-8ED3-4458662F2E0B</key>
+		<string>https://github.com/pcperini/PCToastMessage.git</string>
 		<key>CB76A232-2864-45F6-8662-883229E529E2</key>
 		<string>ssh://github.com/sidraheja/ShowCal.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>ShowCal/ShowCal.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>1FA9D389-44C6-42FD-8ED3-4458662F2E0B</key>
+		<string>../../../../../../Desktop/PCToastMessage</string>
 		<key>CB76A232-2864-45F6-8662-883229E529E2</key>
 		<string>../../..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>CB76A232-2864-45F6-8662-883229E529E2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1FA9D389-44C6-42FD-8ED3-4458662F2E0B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PCToastMessage</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

@@ -44,13 +44,13 @@
         // Read file contents and display in textBox
         NSData *databuffer;
         databuffer = [filemgr contentsAtPath: dataFile];
-       _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
+        _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithData:databuffer];
     }
     
-
     
-
-
+    
+    
+    
     //Table deletion method
     self.savedTableShows.allowsMultipleSelectionDuringEditing = NO;
     
@@ -63,17 +63,17 @@
     
     NSArray *actionButtonItems = @[addShow];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
-   // savedShows *temp = [[savedShows alloc] init];
-  //  _saved = [_allSavedShows objectAtIndex:0];
-   // searchDetails *temp = [[searchDetails alloc] init];
+    // savedShows *temp = [[savedShows alloc] init];
+    //  _saved = [_allSavedShows objectAtIndex:0];
+    // searchDetails *temp = [[searchDetails alloc] init];
     //temp = _saved.showSaved;
     //NSLog(@"Value is: %@", temp.showName);
     
     
     
-
-
-   // _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithFile:_fileName];
+    
+    
+    // _allSavedShows = [NSKeyedUnarchiver unarchiveObjectWithFile:_fileName];
     
     _savedTableShows.delegate = self;
     _savedTableShows.dataSource = self;
@@ -83,7 +83,7 @@
     _savedTableShows.rowHeight = 80;
     _savedTableShows.separatorColor = [UIColor clearColor];
     
-   
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,31 +94,23 @@
 
 -(IBAction)addShow:(id)sender
 {
-    NSLog(@"Add!");
-    //SearchShows *nextScreen = [[SearchShows alloc] init];
-    //[self presentViewController:nextScreen animated:NO completion:nil];
     SearchShows *searchScreen = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"search"];
-   // SearchShows *searchScreen = [[SearchShows alloc] init];
     [self.navigationController pushViewController:searchScreen animated:NO];
-
-
-    
-   // [self presentModalViewController:vc animated:YES];
-
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [_allSavedShows count]; //array count returns 10
+    return [_allSavedShows count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     
-    return 1;// this should be one because it will create space between two cells if you want space between 4 cells you can modify it.
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50.0; // you can have your own choice, of course
+    return 50.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -145,35 +137,17 @@
     cell.textLabel.numberOfLines = 0;
     NSData *showImage = [NSData dataWithContentsOfURL:temp.imageUrlString];
     cell.imageView.image = [UIImage imageWithData:showImage];
-    cell.detailTextLabel.numberOfLines = 0;
+    cell.detailTextLabel.numberOfLines = 3;
     if(temp.futureEpisodesDate.count)
     {
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ airs on %@ on %@ at %@", [temp.futureEpisodesTitle objectAtIndex:0], temp.network, [temp.futureEpisodesDate objectAtIndex:0], temp.time];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Episode, %@ airs on %@ on %@ at %@", [temp.futureEpisodesTitle objectAtIndex:0], temp.network, [temp.futureEpisodesDate objectAtIndex:0], temp.time];
     }
     else
     {
         cell.detailTextLabel.text = @"No future episodes announced!";
     }
-
-    return cell;
     
-    /*UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
-     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-     cell.textLabel.text = [_showSearchResults objectAtIndex:[indexPath row]];
-     UILabel *textLabel = [[UILabel alloc] init];
-     textLabel.text = cell.textLabel.text;
-     // [cell.textLabel setHidden:YES];
-     
-     textLabel.textColor = [UIColor whiteColor];
-     textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24.0];
-     [textLabel sizeToFit];
-     [cell.contentView addSubview:textLabel];
-     [textLabel setCenter:CGPointMake(self.view.center.x, 40)];
-     UIView *selectedView =  [[UIView alloc] init];
-     selectedView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0.2 alpha:0.4];
-     [cell setSelectedBackgroundView:selectedView];
-     return cell;*/
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -183,25 +157,29 @@
     temp = _saved.showSaved;
     if(temp.futureEpisodesDate.count)
     {
-         EKEventStore *store = [[EKEventStore alloc] init];
+        if(temp.calendarList.count)
+        {
+            //notification show is already added to calendar
+            NSLog(@"ADDED2!");
+            [self.navigationController.view  makeToast:@"You've already added this show!"
+                                              duration:1.5
+                                              position:@"bottom"];
+            return;
+        }
+        EKEventStore *store = [[EKEventStore alloc] init];
         [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
             if (!granted) { return; }
-            if(temp.calendarList.count)
+            
+            for(int i = 0; i < temp.futureEpisodesDate.count; ++i)
             {
-                //notification show is already added to calendar
-                NSLog(@"Show already added!");
-                return;
-            }
-        for(int i = 0; i < temp.futureEpisodesDate.count; ++i)
-        {
-            NSString *str = [NSString stringWithFormat:@"%@ %@",
-                             [temp.futureEpisodesDate objectAtIndex:i], temp.time];
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyy-MM-dd hh:mma"];
-            NSTimeZone *zone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
-            [formatter setTimeZone:zone];
-            NSDate *date = [formatter dateFromString:str];
-            EKEvent *event = [EKEvent eventWithEventStore:store];
+                NSString *str = [NSString stringWithFormat:@"%@ %@",
+                                 [temp.futureEpisodesDate objectAtIndex:i], temp.time];
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"yyyy-MM-dd hh:mma"];
+                NSTimeZone *zone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
+                [formatter setTimeZone:zone];
+                NSDate *date = [formatter dateFromString:str];
+                EKEvent *event = [EKEvent eventWithEventStore:store];
                 event.title = [NSString stringWithFormat:@"New episode of %@ on %@ today", temp.showName, temp.network];
                 event.startDate = [date dateByAddingTimeInterval:-60*15];
                 event.endDate = [event.startDate dateByAddingTimeInterval:60*15];
@@ -209,44 +187,36 @@
                 [event addAlarm:[EKAlarm alarmWithAbsoluteDate:event.startDate]];
                 NSError *err = nil;
                 [store saveEvent:event span:EKSpanThisEvent commit:YES error:&err];
-                if(err)
-                {
-                    //notification to let user no not added
-                }
-                else
-                {
-                    //notification successfuly added
-                    NSLog(@"ADDED!");
-                }
-            [temp.calendarList addObject:event.eventIdentifier];
-            NSFileManager *filemgr;
-            NSString *dataFile;
-            NSString *docsDir;
-            NSArray *dirPaths;
-            
-            filemgr = [NSFileManager defaultManager];
-            
-            dirPaths = NSSearchPathForDirectoriesInDomains(
-                                                           NSDocumentDirectory, NSUserDomainMask, YES);
-            
-            docsDir = dirPaths[0];
-            dataFile = [docsDir
-                        stringByAppendingPathComponent: @"datafile.dat"];
-            NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:_allSavedShows];
-            [filemgr createFileAtPath: dataFile
-                             contents: databuffer attributes:nil];
-            
-            NSLog(@"Data Saved");
-
-                //NSLog(@"identifier: %@",event.eventIdentifier);  //this is so you can access this event later
+                [temp.calendarList addObject:event.eventIdentifier];
+                NSFileManager *filemgr;
+                NSString *dataFile;
+                NSString *docsDir;
+                NSArray *dirPaths;
+                filemgr = [NSFileManager defaultManager];
+                
+                dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                               NSDocumentDirectory, NSUserDomainMask, YES);
+                
+                docsDir = dirPaths[0];
+                dataFile = [docsDir
+                            stringByAppendingPathComponent: @"datafile.dat"];
+                NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:_allSavedShows];
+                [filemgr createFileAtPath: dataFile
+                                 contents: databuffer attributes:nil];
             }
+            
         }];
+        [self.navigationController.view  makeToast:@"Added to calendar!"
+                                          duration:1.5
+                                          position:@"bottom"];
     }
     else
     {
-        //add notification for no announced dates!
+        [self.navigationController.view  makeToast:@"Episodes will be added once announced!"
+                                          duration:1.5
+                                          position:@"bottom"];
     }
-  
+    
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return YES if you want the specified item to be editable.
@@ -256,8 +226,6 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSLog(@"Delete!");
-        NSLog(@"true: %@", [_allSavedShows objectAtIndex:indexPath.section]);
         _saved = [_allSavedShows objectAtIndex:indexPath.section];
         EKEventStore* store = [[EKEventStore alloc] init];
         [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
@@ -270,17 +238,12 @@
                 if (eventToRemove) {
                     NSError* error = nil;
                     [store removeEvent:eventToRemove span:EKSpanThisEvent commit:YES error:&error];
-                    if(error)
-                    {
-                        //notification to let know user data has been deleted from calednar
-                    }
-                    else
-                    {
-                        //notification deleted from calendar
-                    }
                 }
             }
         }];
+        [self.navigationController.view  makeToast:@"Deleted from calendar!"
+                                          duration:1.5
+                                          position:@"bottom"];
         [_allSavedShows removeObjectAtIndex:indexPath.section];
         [_savedTableShows reloadData];
         NSFileManager *filemgr;
@@ -299,11 +262,6 @@
         NSData *databuffer = [NSKeyedArchiver archivedDataWithRootObject:_allSavedShows];
         [filemgr createFileAtPath: dataFile
                          contents: databuffer attributes:nil];
-        
-        NSLog(@"Data Saved");
-
-
-        
     }
 }
 

@@ -11,6 +11,7 @@
 #import "SearchShows.h"
 #import "savedShows.h"
 #import "futureEpisodes.h"
+#import "UIView+Toast.h"
 
 
 @interface ViewController : UIViewController

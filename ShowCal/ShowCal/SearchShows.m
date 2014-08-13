@@ -31,6 +31,7 @@ int counter = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     _searchShow.delegate = self;
     _searchShow.showsCancelButton = YES;
     _searchShow.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -378,7 +379,7 @@ int counter = 0;
         [formatter setDateFormat:@"yyyy-MM-dd"];
         NSString *todaysDate = [formatter stringFromDate:[NSDate date]];
         _result = [string compare:todaysDate];
-        if(_result == 1)
+        if(_result >= 0)
         {
             Episodes.episodeDate = string;
         }
@@ -386,7 +387,7 @@ int counter = 0;
     }
     if(_episodeTitle)
     {
-        if(_result == 1)
+        if(_result >= 0)
         {
             Episodes.episodeTitle = string;
         }

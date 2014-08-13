@@ -26,6 +26,8 @@
 		1F4330BC198D7D8100ED2326 /* AddShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F4330BB198D7D8100ED2326 /* AddShows.m */; };
 		1F817DD81990140E00FFD284 /* savedShows.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F817DD71990140E00FFD284 /* savedShows.m */; };
 		1F99E141198E617600BBCA33 /* futureEpisodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F99E140198E617600BBCA33 /* futureEpisodes.m */; };
+		1FBBF030199B9670008FD286 /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FBBF02F199B9670008FD286 /* UIView+Toast.m */; };
+		1FD2D5AD199B699D00845B2D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD2D5AC199B699D00845B2D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1F43306D198CFEF000ED2326 /* ShowCal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShowCal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F43306D198CFEF000ED2326 /* TVTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F433070198CFEF000ED2326 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1F433072198CFEF000ED2326 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1F433074198CFEF000ED2326 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -68,6 +70,9 @@
 		1F817DD71990140E00FFD284 /* savedShows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = savedShows.m; sourceTree = "<group>"; };
 		1F99E13F198E617600BBCA33 /* futureEpisodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = futureEpisodes.h; sourceTree = "<group>"; };
 		1F99E140198E617600BBCA33 /* futureEpisodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = futureEpisodes.m; sourceTree = "<group>"; };
+		1FBBF02E199B9670008FD286 /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
+		1FBBF02F199B9670008FD286 /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
+		1FD2D5AC199B699D00845B2D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FD2D5AD199B699D00845B2D /* QuartzCore.framework in Frameworks */,
 				1F433073198CFEF000ED2326 /* CoreGraphics.framework in Frameworks */,
 				1F433075198CFEF000ED2326 /* UIKit.framework in Frameworks */,
 				1F433071198CFEF000ED2326 /* Foundation.framework in Frameworks */,
@@ -107,7 +113,7 @@
 		1F43306E198CFEF000ED2326 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1F43306D198CFEF000ED2326 /* ShowCal.app */,
+				1F43306D198CFEF000ED2326 /* TVTime.app */,
 				1F43308E198CFEF000ED2326 /* ShowCalTests.xctest */,
 			);
 			name = Products;
@@ -116,6 +122,7 @@
 		1F43306F198CFEF000ED2326 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1FD2D5AC199B699D00845B2D /* QuartzCore.framework */,
 				1F433070198CFEF000ED2326 /* Foundation.framework */,
 				1F433072198CFEF000ED2326 /* CoreGraphics.framework */,
 				1F433074198CFEF000ED2326 /* UIKit.framework */,
@@ -127,6 +134,8 @@
 		1F433076198CFEF000ED2326 /* ShowCal */ = {
 			isa = PBXGroup;
 			children = (
+				1FBBF02E199B9670008FD286 /* UIView+Toast.h */,
+				1FBBF02F199B9670008FD286 /* UIView+Toast.m */,
 				1F4330BB198D7D8100ED2326 /* AddShows.m */,
 				1F4330BA198D7D8100ED2326 /* AddShows.h */,
 				1F4330A5198D03FC00ED2326 /* SearchShows.h */,
@@ -194,7 +203,7 @@
 			);
 			name = ShowCal;
 			productName = ShowCal;
-			productReference = 1F43306D198CFEF000ED2326 /* ShowCal.app */;
+			productReference = 1F43306D198CFEF000ED2326 /* TVTime.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1F43308D198CFEF000ED2326 /* ShowCalTests */ = {
@@ -277,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FBBF030199B9670008FD286 /* UIView+Toast.m in Sources */,
 				1F433087198CFEF000ED2326 /* ViewController.m in Sources */,
 				1F99E141198E617600BBCA33 /* futureEpisodes.m in Sources */,
 				1F433081198CFEF000ED2326 /* AppDelegate.m in Sources */,
@@ -415,7 +425,7 @@
 				GCC_PREFIX_HEADER = "ShowCal/ShowCal-Prefix.pch";
 				INFOPLIST_FILE = "ShowCal/ShowCal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TVTime;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -433,7 +443,7 @@
 				GCC_PREFIX_HEADER = "ShowCal/ShowCal-Prefix.pch";
 				INFOPLIST_FILE = "ShowCal/ShowCal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TVTime;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
